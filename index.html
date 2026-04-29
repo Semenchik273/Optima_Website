@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ООО "Оптима"|грузоперевозки</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+
+
+        body.home-active {
+            background: url('static/фон1.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+
+        body.home-active::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .menu-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background: #1e2a3a;
+            color: white;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            background: #0f1720;
+            text-align: center;
+            border-bottom: 1px solid #2d3e4e;
+        }
+
+        .sidebar-header h2 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .nav-links li {
+            border-bottom: 1px solid #2d3e4e;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 15px 15px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            background: #2d3e4e;
+            padding-left: 42px;
+        }
+
+        .nav-links a i {
+            margin-right: 12px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .main-content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .hero {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+
+        body:not(.home-active) .hero {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+
+        body.home-active .card {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+
+        .truck-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .truck-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .truck-img {
+            font-size: 64px;
+            margin-bottom: 10px;
+        }
+
+        .truck-card h3 {
+            color: #2a5298;
+            margin-bottom: 8px;
+        }
+
+        .truck-specs {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .price-table {
+            background: white;
+            border-radius:14px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .price-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .price-table th {
+            background: #2a5298;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        .price-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .price-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+
+        .footer {
+            background: #1e2a3a;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        .faq_text {
+            border-color: black;
+            color: black;
+            border-width: 1px;
+            background: white;
+            padding: 25px;
+            line-height: 2.0;
+            border-radius: 14px;
+        }
+
+        .types h1 {
+            color: #2a5298;
+        }
+
+        .types p {
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            line-height: 2.5;
+            font-size: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+            .sidebar {
+                width: 280px;
+            }
+        }
+        .Name-input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .simple-input:focus {
+            border-bottom-color: #667eea;
+        }
+    </style>
+</head>
+<body class="home-active">
+<div class="header">
+    <div class="logo">
+        <h1> ООО "Оптима"</h1>
+        <h5>Грузоперевозки</h5>
+    </div>
+    <button class="menu-btn" id="menuBtn">☰</button>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <button class="close-btn" id="closeBtn">✕</button>
+    <div class="sidebar-header">
+        <h2> Меню</h2>
+        <p>Навигация по сайту</p>
+    </div>
+    <ul class="nav-links">
+        <li><a href="#" data-section="home"> Главная</a></li>
+        <li><a href="#" data-section="types"> Виды перевозимых грузов</a></li>
+        <li><a href="#" data-section="price"> Калькулятор стоимости доставки</a></li>
+        <li><a href="#" data-section="fleet"> Автопарк</a></li>
+        <li><a href="#" data-section="faq"> Частые вопросы</a></li>
+        <li><a href="#" data-section="about"> О нас</a></li>
+
+    </ul>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="main-content">
+    <div id="home" class="section active">
+        <div class="hero">
+            <h1>💼Грузоперевозки</h1>
+            <p>Доставка грузов по всей России</p>
+        </div>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">⭐</div>
+                <h3>Огромное количество заказчиков</h3>
+                <p>Которые остались довольны</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🚛</div>
+                <h3>Имеются Вместительные грузовики</h3>
+                <p>Надежные автомобили</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📦</div>
+                <h3>Большой перечень возможных грузов</h3>
+                <p>Гибкие условия</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⏱️</div>
+                <h3>Быстрая доставка</h3>
+                <p>Всегда в срок</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="about" class="section">
+        <h2 style="margin-bottom: 20px; color: #2a5298;"> О компании</h2>
+        <div style="background: white; border-radius: 16px; padding: 30px; line-height: 1.6;">
+            <p style="font-size: 18px; margin-bottom: 20px;"> <strong>Оптима</strong> — это надежный партнер в сфере грузоперевозок и поставки строительных материалов с 2014 года.</p>
+            <p>Мы предлагаем полный спектр услуг: от доставки материалов до перевозки крупногабаритных грузов.</p>
+            <ul style="margin: 20px 0 20px 30px;">
+                <li>✅ Море качественно выполненных заказов</li>
+                <br>
+                <li>✅ Собственный автопарк</li>
+                <br>
+                <li>✅ Доставка по всей России</li>
+            </ul>
+            <h3>📱Ждём вашего звонка!</h3>
+        </div>
+    </div>
+
+    <div id="fleet" class="section">
+        <h2 style="margin-bottom: 25px; color: #2a5298;"> Наш автопарк</h2>
+        <div class="truck-grid">
+            <div class="truck-card">
+                <div class="truck-img">
+                    <img src="https://yvezi.ru/wp-content/uploads/2019/11/Sedelnyj-tyagach-Mersedes.jpg" alt="Мерседес Атего" style="width: 100%; border-radius: 12px;" />
+                </div>
+                <h3>Мерседес Бенз Атего</h3>
+                <p>Вместимость прицепа:115 кубометров</p>
+                <div class="truck-specs">✓ Тягач<br>✓ 300 лошадинных сил <br></div>
+            </div>
+
+            <div class="truck-card">
+                <div class="truck-img">
+                    <img src="static/ельф1.png" alt="Isuzu Elf 2009" style="width: 70%; height: 50%; border-radius: 12px;">
+                    <img src="static/ельф2.png" alt="Isuzu Elf 2009" style="width: 70%; height: 50%; border-radius: 12px;">
+                </div>
+                <h3>Isuzu Elf</h3>
+                <p>Грузоподъемность: 3 тонны</p>
+                <div class="truck-specs">✓ Бортовой<br>✓ Для междугородних перевозок<br>✓ 137 лошадинных сил</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="faq" class="section">
+        <div style="color: #2a5298; ">
+            <h2>Частые Вопросы о работе компании</h2>
+            <br>
+        </div>
+        <div class="faq_text">
+            <h4>1. Как рассчитывается доставка?</h4>
+        </div>
+    </div>
+
+    <div id="types" class="section">
+        <div class="types">
+            <h1>Компания доставляет большое количество грузов:</h1>
+            <br>
+            <p>1. Бытовая техника <br> 2. Мебель</p>
+        </div>
+    </div>
+
+    <div id="price" class="section">
+        <h2 style="margin-bottom: 25px; color: #2a5298;"> Подсчёт стоимости доставки по направлениям</h2>
+        <div class="price-table">
+            <label>
+            <input type="text" class="Name-input" placeholder="Ваше ФИО">
+            </label>
+        </div>
+        <p style="margin-top: 20px; text-align: center; color: #666; opacity: 0.7;">* Реальная стоимость доставки может отличаться</p>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 ООО "Оптима" | Грузоперевозки</p>
+    <p>📞 +7 (951) 178-00-88 | ✉️ OptimZakaZ@mail.ru</p>
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('.section');
+    const body = document.body;
+
+    function openMenu() {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    menuBtn.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+
+    function switchSection(sectionId) {
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+
+
+        if (sectionId === 'home') {
+            body.classList.add('home-active');
+        } else {
+            body.classList.remove('home-active');
+        }
+
+        closeMenu();
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const sectionId = link.getAttribute('data-section');
+            switchSection(sectionId);
+        });
+    });
+</script>
+</body>
+</html>
