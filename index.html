@@ -50,12 +50,16 @@
         }
 
         .logo h1 {
-            font-size: 24px;
+            font-size: 40px;
             letter-spacing: 1px;
         }
 
+        .logo h5 {
+            font-size: 25px;
+        }
+
         .logo p {
-            font-size: 12px;
+            font-size: 30px;
             opacity: 0.8;
         }
 
@@ -339,10 +343,10 @@
         }
 
         .types p {
-            padding: 30px;
+            padding: 10px;
             background: white;
             border-radius: 16px;
-            line-height: 2.5;
+            line-height: 1.5;
             font-size: 20px;
         }
 
@@ -370,6 +374,67 @@
         .simple-input:focus {
             border-bottom-color: #667eea;
         }
+
+        /* Аккордеон (выпадающие блоки) */
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .accordion-item {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .accordion-btn {
+            width: 100%;
+            text-align: left;
+            padding: 18px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2a5298;
+            background: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .accordion-btn:hover {
+            background: #f0f4fc;
+        }
+
+        .arrow {
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+
+        .accordion-item.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            padding: 0 20px;
+            background: #f9f9f9;
+            font-size: 2px;
+            line-height: 1.5;
+            color: #444;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            overflow: hidden;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 300px;
+            padding: 0 20px 20px 20px;
+        }
+
     </style>
 </head>
 <body class="home-active">
@@ -483,9 +548,43 @@
 
     <div id="types" class="section">
         <div class="types">
-            <h1>Компания доставляет большое количество грузов:</h1>
+            <h1>Компания доставляет следующие виды грузов:</h1>
             <br>
-            <p>1. Бытовая техника <br> 2. Мебель</p>
+
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-btn">1. Перевозка оборудования <span class="arrow">▼</span></button>
+                    <div class="accordion-content">
+                        <p>Перевозка оборудования требует особой осторожности, поскольку любые повреждения, связанные с неправильным закреплением груза, вибрацией и тряской, могут привести к нарушениям в его работоспособности и дополнительным временным и материальным затратам на ремонт и наладку. 
+                            ООО «Оптима» перевозит следующие виды оборудования:
+                            - промышленное (станки компьютеризированные, с ЧПУ и т.д., производственные линии);
+                            - электроэнергетическое (турбины, трансформаторы, двигатели)
+                            - строительное (экскаваторы, грейдеры, краны, генераторы);
+                            - торговое (охлаждающие и холодильные витрины и камеры, стеллажи) и др..</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-btn">2. Перевозка мебели <span class="arrow">▼</span></button>
+                    <div class="accordion-content">
+                        <p>Перевозка мебели обычно требуется при переезде или после ремонта, также эта услуга востребована у юридических лиц — расширение штата сотрудников, смена офиса и другие события часто требуют изменений в интерьере. При этом требуется не только не повредить ее при транспортировке, но и занести в помещение и расставить по местам в целости и сохранности.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-btn">3. Перевозка спецтехники <span class="arrow">▼</span></button>
+                    <div class="accordion-content">
+                        <p>Наша компания может помочь в транспортировке различной мелкогабаритной спецтехники: погрузчики, мотоциклы и др. В зависимости от конструкции техника может заезжать сзади или спереди по приставным аппарелям, длина и ширина которых выбирается с учетом ходовых свойств, массы и габаритов груза, наличия и размеров свеса и других характеристик.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-btn">4. Перевозка стройматериалов <span class="arrow">▼</span></button>
+                    <div class="accordion-content">
+                        <p>Если вам требуется перевозка стройматериалов от магазина до дома, от склада до торговой точки или по иному маршруту, компания «Оптима» предлагает свои услуги. Чтобы заказать перевозку стройматериалов по выгодным тарифам, позвоните по указанным телефонам. Наши сотрудники свяжутся с вами в ближайшее время, чтобы обговорить детали.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -545,6 +644,15 @@
 
         closeMenu();
     }
+
+
+        document.querySelectorAll('.accordion-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const accordionItem = button.closest('.accordion-item');
+            accordionItem.classList.toggle('active');
+        });
+    });
+
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
