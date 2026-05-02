@@ -1,2 +1,2 @@
 # Optima_Website
-Webpage for russian company "Optima" 
+Web-site for russian company "Optima" 
